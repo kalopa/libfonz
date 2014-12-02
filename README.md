@@ -14,3 +14,10 @@ else. No exceptions. The other reserved byte is 0xcc, which is an escape
 byte. If seen, then the next byte will have its high bit turned on. So
 if the payload contains either 0xce or 0xcc, then {0xcc, 0x4e} or {0xcc,
 0x4c} is sent instead.
+
+The library has been implemented twice. Firstly, as a lightweight version
+for the Atmel AVR (or Arduino) and secondly as a main, prioritised
+library for systems with more memory and bigger processors.
+
+Normally, you'd run the AVR mini library on your embedded system, and
+the main library on the machine that's talking to it.
