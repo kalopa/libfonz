@@ -88,11 +88,21 @@ fonz2:	pop		r31
 ;
 ; void _sio_txinton();
 ;
-; Turn off serial transmit interrupts.
+; Turn on serial transmit interrupts.
 	.global	_sio_txinton
 	.func	_sio_txinton
 _sio_txinton:
 	sbi		UCSRB,5				; Enable TX ints
+	ret
+	.endfunc
+;
+; void _sio_txintoff();
+;
+; Turn off serial transmit interrupts.
+	.global	_sio_txintoff
+	.func	_sio_txintoff
+_sio_txintoff:
+	cbi		UCSRB,5				; Disable TX ints
 	ret
 	.endfunc
 ;

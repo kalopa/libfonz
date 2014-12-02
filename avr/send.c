@@ -127,7 +127,7 @@ fp_outdata()
 		 * back looking for a packet and we mark this one as not-busy.
 		 */
 		ch = cksum;
-		_fp_addtail(sfp, &fp_freeq);
+		_fp_addtail(sfp, &fp_freetxq);
 		state = FONZ_STATE_WAITHDR;
 		sfp = NULL;
 		break;

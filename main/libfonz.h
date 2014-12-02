@@ -24,28 +24,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include "libfonz.h"
+#define FONZ_HEADER	0xce
+#define FONZ_ESCAPE	0xcc
+#define FONZ_MASK	0xc0
 
-/*
- */
-void
-fp_init(int rxqlen, int txqlen)
-{
-	int i;
-	void *datap;
+#define FONZ_REQUEST	0x00
+#define FONZ_RESPONSE	0x01
 
-	_sio_txintoff();
-	fp_freetxq = fp_freerxq = fp_recvq = fp_sendq = NULL;
-	if ((datap = malloc(sizeof(struct fonz) * (rxqlen + txqlen))) == NULL)
-		return;
-	for (i = 0; i < rxqlen; i++) {
-		_fp_addtail((struct fonz *)datap, &fp_freerxq);
-		datap += sizeof(struct fonz);
-	}
-	for (i = 0; i < txqlen; i++) {
-		_fp_addtail((struct fonz *)datap, &fp_freetxq);
-		datap += sizeof(struct fonz);
-	}
-}
+#define FONZ_PRIORITIES		8
+
+struct	fonz	{
+	struct	fonz	*fp_next;
+	unsigned char	fp_cmd;
+	unsigned char	fp_arg1;
+	unsigned char	fp_arg2;
+};
+
+struct	fonz	*fp_freerxq;
+struct	fonz	*fp_freetxq;
+struct	fonz	*fp_recvq;
+struct	fonz	*fp_sendq[FONZ_PRIORITIES];
+
+void		fp_init(int, int);
+struct fonz	*fp_alloc();
+void		fp_free();
+void		fp_send(struct fonz *, int);
+struct fonz	*fp_receive();
+int		fp_sendcmd(unsigned char, unsigned char, unsigned char, int);
+
+void		fp_inbuffer(unsigned char *, int);
+int		fp_outbuffer(unsigned char *, int);
+void		_fp_addtail(struct fonz *, struct fonz **);
+struct	fonz	*_fp_remhead(struct fonz **);

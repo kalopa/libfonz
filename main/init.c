@@ -36,8 +36,9 @@ fp_init(int rxqlen, int txqlen)
 	int i;
 	void *datap;
 
-	_sio_txintoff();
-	fp_freetxq = fp_freerxq = fp_recvq = fp_sendq = NULL;
+	fp_freetxq = fp_freerxq = fp_recvq = NULL;
+	for (i = 0; i < FONZ_PRIORITIES; i++)
+		fp_sendq[i] = NULL;
 	if ((datap = malloc(sizeof(struct fonz) * (rxqlen + txqlen))) == NULL)
 		return;
 	for (i = 0; i < rxqlen; i++) {

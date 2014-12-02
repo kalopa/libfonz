@@ -27,8 +27,16 @@
 #include <stdio.h>
 #include "libfonz.h"
 
+#define FONZ_STATE_WAITHDR	0
+#define FONZ_STATE_FIRSTBYTE	1
+#define FONZ_STATE_WAITARG1	2
+#define FONZ_STATE_WAITARG2	3
+#define FONZ_STATE_WAITCSUM	4
+
 unsigned char	fprecv_havepkt = 0;
 unsigned char	fprecv_lostpkt = 0;
+
+static	void	_recvbyte(unsigned char);
 
 /*
  * Get any received packets.
@@ -40,13 +48,23 @@ fp_receive()
 }
 
 /*
- * We have received an 8-bit byte over the wire. Time to do something useful
- * with it. We try to decode a Fonz Packet from the byte sequence.
+ * We have received a block of data over the wire. Attempt to construct
+ * one or more packets from the input.
  */
 void
-fp_indata(unsigned char ch)
+fp_inbuffer(unsigned char *bufferp, int blen)
 {
-	static struct fonz *rfp = NULL;
+	while (blen > 0)
+		_recvbyte(*bufferp++);
+}
+
+/*
+ *
+ */
+static void
+_recvbyte(unsigned char ch)
+{
+	static struct fonz *fp = NULL;
 	static unsigned char state = FONZ_STATE_WAITHDR, sawesc = 0, cksum = 0;
 
 	if (ch == FONZ_HEADER) {
@@ -54,7 +72,7 @@ fp_indata(unsigned char ch)
 		 * Highest priority is a header.
 		 */
 		state = FONZ_STATE_FIRSTBYTE;
-		if (rfp != NULL)
+		if (fp != NULL)
 			fprecv_lostpkt++;
 		return;
 	}
@@ -78,7 +96,7 @@ fp_indata(unsigned char ch)
 	/*
 	 * Find an empty packet to receive the data.
 	 */
-	if (rfp == NULL && (rfp = _fp_remhead(&fp_freerxq)) == NULL) {
+	if (fp == NULL && (fp = _fp_remhead(&fp_freerxq)) == NULL) {
 		/*
 		 * No space - drop the packet.
 		 */
@@ -94,10 +112,10 @@ fp_indata(unsigned char ch)
 		/*
 		 * Store the command, and init the checksum.
 		 */
-		rfp->fp_cmd = ch;
+		fp->fp_cmd = ch;
 		cksum = ch ^ 0xff;
-		rfp->fp_arg1 = rfp->fp_arg2 = 0;
-		state = (rfp->fp_cmd & FONZ_RESPONSE) ? FONZ_STATE_WAITARG1 : FONZ_STATE_WAITCSUM;
+		fp->fp_arg1 = fp->fp_arg2 = 0;
+		state = (fp->fp_cmd & FONZ_RESPONSE) ? FONZ_STATE_WAITARG1 : FONZ_STATE_WAITCSUM;
 		break;
 
 	case FONZ_STATE_WAITARG1:
@@ -105,7 +123,7 @@ fp_indata(unsigned char ch)
 		 * One of the optional arguments. Save it, and add it to the
 		 * checksum.
 		 */
-		rfp->fp_arg1 = ch;
+		fp->fp_arg1 = ch;
 		cksum ^= ch;
 		state++;
 		break;
@@ -115,7 +133,7 @@ fp_indata(unsigned char ch)
 		 * One of the optional arguments. Save it, and add it to the
 		 * checksum.
 		 */
-		rfp->fp_arg2 = ch;
+		fp->fp_arg2 = ch;
 		cksum ^= ch;
 		state++;
 		break;
@@ -127,8 +145,8 @@ fp_indata(unsigned char ch)
 		 * wait for the next one.
 		 */
 		if (ch == cksum)
-			_fp_addtail(rfp, &fp_recvq);
-		rfp = NULL;
+			_fp_addtail(fp, &fp_recvq);
+		fp = NULL;
 		state = FONZ_STATE_WAITHDR;
 		break;
 	}

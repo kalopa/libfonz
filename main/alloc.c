@@ -33,7 +33,7 @@
 struct fonz *
 fp_alloc()
 {
-	return(_fp_remhead(&fp_freeq));
+	return(_fp_remhead(&fp_freetxq));
 }
 
 /*
@@ -42,5 +42,5 @@ fp_alloc()
 void
 fp_free(struct fonz *fp)
 {
-	_fp_addtail(fp, &fp_freeq);
+	_fp_addtail(fp, &fp_freerxq);
 }

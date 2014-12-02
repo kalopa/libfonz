@@ -26,24 +26,12 @@
 #
 # ABSTRACT
 #
-DEVICE?=atmega8
-
-BINDIR=/usr/local/bin
-
-AR=avr-ar
-AS=avr-as
-CC=avr-gcc
-GCC=avr-gcc
-LD=avr-ld
-NM=avr-nm
-
-OBJS=	init.o alloc.o recv.o send.o queue.o sioint.o
+SRCS=	init.c alloc.c recv.c send.c queue.c
+OBJS=	init.o alloc.o recv.o send.o queue.o
 
 LIB=	libfonz.a
 
-ASFLAGS= -mmcu=$(DEVICE) -I$(AVR)
-CFLAGS=	-Wall -O2 -mmcu=$(DEVICE)
-LDFLAGS=-nostartfiles -L$(AVR)
+CFLAGS=	-Wall -O2
 
 $(LIB): $(OBJS)
 
@@ -52,13 +40,10 @@ all:	$(LIB)
 clean:
 	rm -f $(LIB) $(OBJS)
 
+tags:	$(CSRCS)
+	ctags $(CSRCS)
+
 $(LIB):	$(OBJS)
 	$(AR) cru $(LIB) $?
 
 $(OBJS): libfonz.h
-
-alloc.o: ../main/alloc.c
-	$(CC) $(CFLAGS) -c -o $@ $<
-
-queue.o: ../main/queue.c
-	$(CC) $(CFLAGS) -c -o $@ $<

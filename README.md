@@ -21,3 +21,11 @@ library for systems with more memory and bigger processors.
 
 Normally, you'd run the AVR mini library on your embedded system, and
 the main library on the machine that's talking to it.
+
+AVR implementation of libfonz
+=============================
+
+This particular implementation of the library is designed to be used on
+embedded systems, such as the Atmel AVR. It includes functions for
+handling SIO interrupts, enqueuing and dequeing packets, and basic
+packet allocation.

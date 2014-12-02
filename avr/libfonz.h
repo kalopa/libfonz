@@ -44,11 +44,12 @@ struct	fonz	{
 	unsigned char	fp_arg2;
 };
 
-struct	fonz	*fp_freeq;
+struct	fonz	*fp_freerxq;
+struct	fonz	*fp_freetxq;
 struct	fonz	*fp_recvq;
 struct	fonz	*fp_sendq;
 
-void		fp_init(int);
+void		fp_init(int, int);
 struct fonz	*fp_alloc();
 void		fp_free();
 void		fp_send(struct fonz *);
@@ -61,3 +62,4 @@ void		_fp_addtail(struct fonz *, struct fonz **);
 struct	fonz	*_fp_remhead(struct fonz **);
 
 void		_sio_txinton();
+void		_sio_txintoff();
