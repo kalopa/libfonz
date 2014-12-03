@@ -67,9 +67,9 @@ __vectors:
 	rjmp	nointr		; Store Program Memory Ready
 ```
 
-(redirect the `RXC` and `UDRE` interrupt vectors to `\_fonz\_in()` and `\_fonz\_out()` respectively).
+(redirect the `RXC` and `UDRE` interrupt vectors to `_fonz_in()` and `_fonz_out()` respectively).
 
-In your code, include the header file and call the `fp\_init()` function.
+In your code, include the header file and call the `fp_init()` function.
 
 ```C
 #include "libfonz.h"
@@ -99,14 +99,14 @@ main()
 Packet Operation
 ================
 
-The `fp\_init()` function pre-allocates packets for the send and receive queues.
+The `fp_init()` function pre-allocates packets for the send and receive queues.
 The queues are separate so that synchronous messages can be sent and received
 without the sender exhausting the free packet pool, and being unable to receive
 a response.
 
-The `fp\_receive()` function will attempt to remove a packet from the receive
+The `fp_receive()` function will attempt to remove a packet from the receive
 queue, returning NULL if it is empty.
-On completion of packet processing, call `fp\_free()` to return the packet to
+On completion of packet processing, call `fp_free()` to return the packet to
 the receive packet pool.
 
 The `fonz` struct has the following data types:
