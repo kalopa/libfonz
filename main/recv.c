@@ -112,10 +112,10 @@ _recvbyte(unsigned char ch)
 		/*
 		 * Store the command, and init the checksum.
 		 */
-		fp->fp_cmd = ch;
+		fp->cmd = ch;
 		cksum = ch ^ 0xff;
-		fp->fp_arg1 = fp->fp_arg2 = 0;
-		state = (fp->fp_cmd & FONZ_RESPONSE) ? FONZ_STATE_WAITARG1 : FONZ_STATE_WAITCSUM;
+		fp->arg1 = fp->arg2 = 0;
+		state = (fp->cmd & FONZ_RESPONSE) ? FONZ_STATE_WAITARG1 : FONZ_STATE_WAITCSUM;
 		break;
 
 	case FONZ_STATE_WAITARG1:
@@ -123,7 +123,7 @@ _recvbyte(unsigned char ch)
 		 * One of the optional arguments. Save it, and add it to the
 		 * checksum.
 		 */
-		fp->fp_arg1 = ch;
+		fp->arg1 = ch;
 		cksum ^= ch;
 		state++;
 		break;
@@ -133,7 +133,7 @@ _recvbyte(unsigned char ch)
 		 * One of the optional arguments. Save it, and add it to the
 		 * checksum.
 		 */
-		fp->fp_arg2 = ch;
+		fp->arg2 = ch;
 		cksum ^= ch;
 		state++;
 		break;

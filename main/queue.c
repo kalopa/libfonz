@@ -38,11 +38,11 @@ _fp_addtail(struct fonz *fp, struct fonz **queue)
 	if (*queue == NULL)
 		*queue = fp;
 	else {
-		for (nfp = *queue; nfp->fp_next != NULL; nfp = nfp->fp_next)
+		for (nfp = *queue; nfp->next != NULL; nfp = nfp->next)
 			;
-		nfp->fp_next = fp;
+		nfp->next = fp;
 	}
-	fp->fp_next = NULL;
+	fp->next = NULL;
 }
 
 /*
@@ -55,6 +55,6 @@ _fp_remhead(struct fonz **queue)
 
 	if ((fp = *queue) == NULL)
 		return(NULL);
-	*queue = fp->fp_next;
+	*queue = fp->next;
 	return(fp);
 }

@@ -34,10 +34,10 @@
 #define FONZ_PRIORITIES		8
 
 struct	fonz	{
-	struct	fonz	*fp_next;
-	unsigned char	fp_cmd;
-	unsigned char	fp_arg1;
-	unsigned char	fp_arg2;
+	struct	fonz	*next;
+	unsigned char	cmd;
+	unsigned char	arg1;
+	unsigned char	arg2;
 };
 
 struct	fonz	*fp_freerxq;

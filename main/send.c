@@ -39,9 +39,9 @@ fp_sendcmd(unsigned char cmd, unsigned char arg1, unsigned char arg2, int prio)
 
 	if ((fp = fp_alloc()) == NULL)
 		return(0);
-	fp->fp_cmd = cmd;
-	fp->fp_arg1 = arg1;
-	fp->fp_arg2 = arg2;
+	fp->cmd = cmd;
+	fp->arg1 = arg1;
+	fp->arg2 = arg2;
 	_fp_addtail(fp, &fp_sendq[prio]);
 	return(1);
 }
@@ -87,22 +87,22 @@ fp_outbuffer(unsigned char *bufferp, int blen)
 		*bufferp++ = FONZ_HEADER;
 		blen--;
 		tmplen = 1;
-		if ((n = _fillbyte(fp->fp_cmd, bufferp, blen)) < 0) {
+		if ((n = _fillbyte(fp->cmd, bufferp, blen)) < 0) {
 			/*
 			 * Wasn't able to squeeze in the byte. Leave
 			 * with what we've done already.
 			 */
 			break;
 		}
-		cksum = fp->fp_cmd ^ 0xff;
+		cksum = fp->cmd ^ 0xff;
 		bufferp += n;
 		tmplen += n;
 		blen -= n;
-		if (fp->fp_cmd & FONZ_RESPONSE) {
+		if (fp->cmd & FONZ_RESPONSE) {
 			/*
 			 * This command has arguments.
 			 */
-			if ((n = _fillbyte(fp->fp_arg1, bufferp, blen)) < 0) {
+			if ((n = _fillbyte(fp->arg1, bufferp, blen)) < 0) {
 				/*
 				 * Wasn't able to squeeze in the
 				 * byte. Leave with what we've done
@@ -110,11 +110,11 @@ fp_outbuffer(unsigned char *bufferp, int blen)
 				 */
 				break;
 			}
-			cksum ^= fp->fp_arg1;
+			cksum ^= fp->arg1;
 			bufferp += n;
 			blen -= n;
 			tmplen += n;
-			if ((n = _fillbyte(fp->fp_arg2, bufferp, blen)) < 0) {
+			if ((n = _fillbyte(fp->arg2, bufferp, blen)) < 0) {
 				/*
 				 * Wasn't able to squeeze in the
 				 * byte. Leave with what we've done
@@ -122,7 +122,7 @@ fp_outbuffer(unsigned char *bufferp, int blen)
 				 */
 				break;
 			}
-			cksum ^= fp->fp_arg2;
+			cksum ^= fp->arg2;
 			bufferp += n;
 			blen -= n;
 			tmplen += n;
@@ -138,7 +138,7 @@ fp_outbuffer(unsigned char *bufferp, int blen)
 		 * up a bit, and remove the packet from the queue.
 		 */
 		outlen += tmplen;
-		fp_sendq[prio] = fp->fp_next;
+		fp_sendq[prio] = fp->next;
 	}
 	return(outlen);
 }

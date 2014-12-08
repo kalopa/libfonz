@@ -37,9 +37,9 @@ fp_sendcmd(unsigned char cmd, unsigned char arg1, unsigned char arg2)
 
 	if ((fp = fp_alloc()) == NULL)
 		return(0);
-	fp->fp_cmd = cmd;
-	fp->fp_arg1 = arg1;
-	fp->fp_arg2 = arg2;
+	fp->cmd = cmd;
+	fp->arg1 = arg1;
+	fp->arg2 = arg2;
 	fp_send(fp);
 	return(1);
 }
@@ -103,19 +103,19 @@ fp_outdata()
 		/*
 		 * First byte - send the command byte.
 		 */
-		ch = sfp->fp_cmd;
+		ch = sfp->cmd;
 		cksum = ch ^ 0xff;
-		state = (sfp->fp_cmd & FONZ_RESPONSE) ? FONZ_STATE_WAITARG1 : FONZ_STATE_WAITCSUM;
+		state = (sfp->cmd & FONZ_RESPONSE) ? FONZ_STATE_WAITARG1 : FONZ_STATE_WAITCSUM;
 		break;
 
 	case FONZ_STATE_WAITARG1:
-		ch = sfp->fp_arg1;
+		ch = sfp->arg1;
 		cksum ^= ch;
 		state++;
 		break;
 
 	case FONZ_STATE_WAITARG2:
-		ch = sfp->fp_arg2;
+		ch = sfp->arg2;
 		cksum ^= ch;
 		state++;
 		break;

@@ -94,10 +94,10 @@ fp_indata(unsigned char ch)
 		/*
 		 * Store the command, and init the checksum.
 		 */
-		rfp->fp_cmd = ch;
+		rfp->cmd = ch;
 		cksum = ch ^ 0xff;
-		rfp->fp_arg1 = rfp->fp_arg2 = 0;
-		state = (rfp->fp_cmd & FONZ_RESPONSE) ? FONZ_STATE_WAITARG1 : FONZ_STATE_WAITCSUM;
+		rfp->arg1 = rfp->arg2 = 0;
+		state = (rfp->cmd & FONZ_RESPONSE) ? FONZ_STATE_WAITARG1 : FONZ_STATE_WAITCSUM;
 		break;
 
 	case FONZ_STATE_WAITARG1:
@@ -105,7 +105,7 @@ fp_indata(unsigned char ch)
 		 * One of the optional arguments. Save it, and add it to the
 		 * checksum.
 		 */
-		rfp->fp_arg1 = ch;
+		rfp->arg1 = ch;
 		cksum ^= ch;
 		state++;
 		break;
@@ -115,7 +115,7 @@ fp_indata(unsigned char ch)
 		 * One of the optional arguments. Save it, and add it to the
 		 * checksum.
 		 */
-		rfp->fp_arg2 = ch;
+		rfp->arg2 = ch;
 		cksum ^= ch;
 		state++;
 		break;

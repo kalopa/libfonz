@@ -113,15 +113,15 @@ The `fonz` struct has the following data types:
 
 ```C
 struct  fonz    {
-	struct	fonz	*fp_next;
-	unsigned char	fp_cmd;
-	unsigned char	fp_arg1;
-	unsigned char	fp_arg2;
+	struct	fonz	*next;
+	unsigned char	cmd;
+	unsigned char	arg1;
+	unsigned char	arg2;
 };
 ```
 
 Commands with the least-significant bit set are assumed to have two single-byte arguments,
-`fp_arg1` and `fp_arg2`.
+`arg1` and `arg2`.
 All other commands do not have arguments.
 
 Think of these as GET/SET pairs, which you can define.

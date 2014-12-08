@@ -74,7 +74,7 @@ runcmd()
 		fp_indata(data[i]);
 		if ((fp = fp_receive()) != NULL) {
 			printf("GOT A PACKET!\n");
-			printf("cmd:0x%02x,arg1:0x%02x,arg2:0x%02x\n", fp->fp_cmd, fp->fp_arg1, fp->fp_arg2);
+			printf("cmd:0x%02x,arg1:0x%02x,arg2:0x%02x\n", fp->cmd, fp->arg1, fp->arg2);
 			fp_free(fp);
 		}
 	}
