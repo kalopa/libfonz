@@ -86,22 +86,42 @@ fonz2:	pop		r31
 	reti						; Return from interrupt
 	.endfunc
 ;
-; void _sio_txinton();
+; void _fp_rxinton();
+;
+; Turn on serial receive interrupts.
+	.global	_fp_rxinton
+	.func	_fp_rxinton
+_fp_rxinton:
+	sbi		UCSRB,7				; Enable RX ints
+	ret
+	.endfunc
+;
+; void _fp_rxintoff();
+;
+; Turn off serial receive interrupts.
+	.global	_fp_rxintoff
+	.func	_fp_rxintoff
+_fp_rxintoff:
+	cbi		UCSRB,7				; Disable RX ints
+	ret
+	.endfunc
+;
+; void _fp_txinton();
 ;
 ; Turn on serial transmit interrupts.
-	.global	_sio_txinton
-	.func	_sio_txinton
-_sio_txinton:
+	.global	_fp_txinton
+	.func	_fp_txinton
+_fp_txinton:
 	sbi		UCSRB,5				; Enable TX ints
 	ret
 	.endfunc
 ;
-; void _sio_txintoff();
+; void _fp_txintoff();
 ;
 ; Turn off serial transmit interrupts.
-	.global	_sio_txintoff
-	.func	_sio_txintoff
-_sio_txintoff:
+	.global	_fp_txintoff
+	.func	_fp_txintoff
+_fp_txintoff:
 	cbi		UCSRB,5				; Disable TX ints
 	ret
 	.endfunc

@@ -29,24 +29,26 @@
 #include "libfonz.h"
 
 /*
+ * Enable all FonzPacket communications.
  */
 void
-fp_init(int rxqlen, int txqlen)
+fp_enable()
 {
-	int i;
-	void *datap;
+	_fp_rxinton();
+}
+
+/*
+ * Disable all FonzPacket communications, until further notice.
+ */
+void
+fp_disable()
+{
+	struct fonz *fp;
 
 	_fp_rxintoff();
 	_fp_txintoff();
-	fp_freetxq = fp_freerxq = fp_recvq = fp_sendq = NULL;
-	if ((datap = malloc(sizeof(struct fonz) * (rxqlen + txqlen))) == NULL)
-		return;
-	for (i = 0; i < rxqlen; i++) {
-		_fp_addtail((struct fonz *)datap, &fp_freerxq);
-		datap += sizeof(struct fonz);
-	}
-	for (i = 0; i < txqlen; i++) {
-		_fp_addtail((struct fonz *)datap, &fp_freetxq);
-		datap += sizeof(struct fonz);
-	}
+	while ((fp = _fp_remhead(&fp_recvq)) != NULL)
+		_fp_addtail(fp, &fp_freerxq);
+	while ((fp = _fp_remhead(&fp_sendq)) != NULL)
+		_fp_addtail(fp, &fp_freetxq);
 }

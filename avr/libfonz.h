@@ -55,11 +55,15 @@ void		fp_free();
 void		fp_send(struct fonz *);
 struct fonz	*fp_receive();
 int		fp_sendcmd(unsigned char, unsigned char, unsigned char);
+void		fp_enable();
+void		fp_disable();
 
 void		fp_indata(unsigned char);
 int		fp_outdata();
 void		_fp_addtail(struct fonz *, struct fonz **);
 struct	fonz	*_fp_remhead(struct fonz **);
 
-void		_sio_txinton();
-void		_sio_txintoff();
+void		_fp_rxinton();
+void		_fp_rxintoff();
+void		_fp_txinton();
+void		_fp_txintoff();

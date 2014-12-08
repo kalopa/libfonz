@@ -51,7 +51,7 @@ void
 fp_send(struct fonz *fp)
 {
 	_fp_addtail(fp, &fp_sendq);
-	_sio_txinton();
+	_fp_txinton();
 }
 
 /*
