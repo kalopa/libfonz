@@ -57,8 +57,8 @@ $(LIB):	$(OBJS)
 
 $(OBJS): libfonz.h
 
-alloc.o: ../main/alloc.c
+alloc.o: ../generic/alloc.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-queue.o: ../main/queue.c
+queue.o: ../generic/queue.c
 	$(CC) $(CFLAGS) -c -o $@ $<
