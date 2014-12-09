@@ -28,22 +28,21 @@
 #
 DEVICE?=atmega8
 
-BINDIR=/usr/local/bin
+AVR_BINDIR?=/usr/local/bin
 
-AR=avr-ar
-AS=avr-as
-CC=avr-gcc
-GCC=avr-gcc
-LD=avr-ld
-NM=avr-nm
+AR=$(AVR_BINDIR)/avr-ar
+AS=$(AVR_BINDIR)/avr-as
+CC=$(AVR_BINDIR)/avr-gcc
+GCC=$(AVR_BINDIR)/avr-gcc
+LD=$(AVR_BINDIR)/avr-ld
+NM=$(AVR_BINDIR)/avr-nm
 
 OBJS=	init.o alloc.o recv.o send.o queue.o sioint.o
 
 LIB=	libfonz.a
 
-ASFLAGS= -mmcu=$(DEVICE) -I$(AVR)
+ASFLAGS= -mmcu=$(DEVICE)
 CFLAGS=	-Wall -O2 -mmcu=$(DEVICE)
-LDFLAGS=-nostartfiles -L$(AVR)
 
 $(LIB): $(OBJS)
 
