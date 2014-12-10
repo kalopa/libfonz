@@ -138,7 +138,8 @@ fp_outbuffer(unsigned char *bufferp, int blen)
 		 * up a bit, and remove the packet from the queue.
 		 */
 		outlen += tmplen;
-		fp_sendq[prio] = fp->next;
+		fp_sendq[prio - 1] = fp->next;
+		fp = fp->next;
 	}
 	return(outlen);
 }
