@@ -26,12 +26,12 @@
 #
 # ABSTRACT
 #
-SRCS=	init.c alloc.c recv.c send.c queue.c
-OBJS=	init.o alloc.o recv.o send.o queue.o
+SRCS=	init.c alloc.c recv.c send.c queue.c buffer.c
+OBJS=	init.o alloc.o recv.o send.o queue.o buffer.o
 
 LIB=	libfonz.a
 
-CFLAGS=	-Wall -O2
+CFLAGS=	-Wall -O2 -I.
 
 $(LIB): $(OBJS)
 

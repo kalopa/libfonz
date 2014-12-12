@@ -26,7 +26,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include "libfonz.h"
+#include <libfonz.h>
 
 /*
  */
@@ -37,8 +37,14 @@ fp_init(int rxqlen, int txqlen)
 	void *datap;
 
 	fp_freetxq = fp_freerxq = fp_recvq = NULL;
+#ifdef AVR
+	_fp_rxintoff();
+	_fp_txintoff();
+	fp_sendq = NULL;
+#else
 	for (i = 0; i < FONZ_PRIORITIES; i++)
 		fp_sendq[i] = NULL;
+#endif
 	if ((datap = malloc(sizeof(struct fonz) * (rxqlen + txqlen))) == NULL)
 		return;
 	for (i = 0; i < rxqlen; i++) {

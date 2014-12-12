@@ -25,18 +25,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include <stdio.h>
-#include "libfonz.h"
+#include <libfonz.h>
 
-#define FONZ_STATE_WAITHDR	0
-#define FONZ_STATE_FIRSTBYTE	1
-#define FONZ_STATE_WAITARG1	2
-#define FONZ_STATE_WAITARG2	3
-#define FONZ_STATE_WAITCSUM	4
-
+#ifdef AVR
 unsigned char	fprecv_havepkt = 0;
 unsigned char	fprecv_lostpkt = 0;
-
-static	void	_recvbyte(unsigned char);
+#else
+unsigned int	fprecv_havepkt = 0;
+unsigned int	fprecv_lostpkt = 0;
+#endif
 
 /*
  * Get any received packets.
@@ -48,21 +45,11 @@ fp_receive()
 }
 
 /*
- * We have received a block of data over the wire. Attempt to construct
- * one or more packets from the input.
+ * We have received an 8-bit byte over the wire. Time to do something useful
+ * with it. We try to decode a Fonz Packet from the byte sequence.
  */
 void
-fp_inbuffer(unsigned char *bufferp, int blen)
-{
-	while (blen > 0)
-		_recvbyte(*bufferp++);
-}
-
-/*
- *
- */
-static void
-_recvbyte(unsigned char ch)
+fp_indata(unsigned char ch)
 {
 	static struct fonz *fp = NULL;
 	static unsigned char state = FONZ_STATE_WAITHDR, sawesc = 0, cksum = 0;

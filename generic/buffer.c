@@ -25,28 +25,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include <stdio.h>
-#include <stdlib.h>
-#include "libfonz.h"
+#include <libfonz.h>
 
 /*
+ * We have received a block of data over the wire. Attempt to construct
+ * one or more packets from the input.
  */
 void
-fp_init(int rxqlen, int txqlen)
+fp_inbuffer(unsigned char *bufferp, int blen)
 {
-	int i;
-	void *datap;
-
-	_fp_rxintoff();
-	_fp_txintoff();
-	fp_freetxq = fp_freerxq = fp_recvq = fp_sendq = NULL;
-	if ((datap = malloc(sizeof(struct fonz) * (rxqlen + txqlen))) == NULL)
-		return;
-	for (i = 0; i < rxqlen; i++) {
-		_fp_addtail((struct fonz *)datap, &fp_freerxq);
-		datap += sizeof(struct fonz);
-	}
-	for (i = 0; i < txqlen; i++) {
-		_fp_addtail((struct fonz *)datap, &fp_freetxq);
-		datap += sizeof(struct fonz);
-	}
+	while (blen > 0)
+		fp_indata(*bufferp++);
 }

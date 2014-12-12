@@ -33,6 +33,12 @@
 
 #define FONZ_PRIORITIES		8
 
+#define FONZ_STATE_WAITHDR	0
+#define FONZ_STATE_FIRSTBYTE	1
+#define FONZ_STATE_WAITARG1	2
+#define FONZ_STATE_WAITARG2	3
+#define FONZ_STATE_WAITCSUM	4
+
 struct	fonz	{
 	struct	fonz	*next;
 	unsigned char	cmd;
@@ -52,6 +58,7 @@ void		fp_send(struct fonz *, int);
 struct fonz	*fp_receive();
 int		fp_sendcmd(unsigned char, unsigned char, unsigned char, int);
 
+void		fp_indata(unsigned char);
 void		fp_inbuffer(unsigned char *, int);
 int		fp_outbuffer(unsigned char *, int);
 void		_fp_addtail(struct fonz *, struct fonz **);

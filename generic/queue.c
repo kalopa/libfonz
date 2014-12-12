@@ -25,7 +25,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include <stdio.h>
-#include "libfonz.h"
+#include <libfonz.h>
 
 /*
  * Release a packet to the tail of a named queue.

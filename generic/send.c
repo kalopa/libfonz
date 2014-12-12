@@ -25,7 +25,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include <stdio.h>
-#include "libfonz.h"
+#include <libfonz.h>
 
 static	int	_fillbyte(int, unsigned char *, int);
 

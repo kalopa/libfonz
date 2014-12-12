@@ -37,12 +37,12 @@ GCC=$(AVR_BINDIR)/avr-gcc
 LD=$(AVR_BINDIR)/avr-ld
 NM=$(AVR_BINDIR)/avr-nm
 
-OBJS=	init.o alloc.o recv.o send.o queue.o sioint.o
+OBJS=	drain.o send.o init.o alloc.o recv.o queue.o sioint.o
 
 LIB=	libfonz.a
 
 ASFLAGS= -mmcu=$(DEVICE)
-CFLAGS=	-Wall -O2 -mmcu=$(DEVICE)
+CFLAGS=	-I. -Wall -O2 -mmcu=$(DEVICE) -DAVR
 
 $(LIB): $(OBJS)
 
@@ -59,5 +59,11 @@ $(OBJS): libfonz.h
 alloc.o: ../generic/alloc.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+init.o: ../generic/init.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
 queue.o: ../generic/queue.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+recv.o: ../generic/recv.c
 	$(CC) $(CFLAGS) -c -o $@ $<
