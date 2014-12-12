@@ -32,8 +32,8 @@
 #define FONZ_COMMAND_PING	0
 #define FONZ_COMMAND_MAGIC	1
 
-#define FONZ_MAGIC_SLAVE	0x55
-#define FONZ_MAGIC_CLIENT	0xa0
+#define FONZ_MAGIC_MASTER	0x55
+#define FONZ_MAGIC_SLAVE	0xa0
 
 struct	fonz	{
 	struct	fonz	*next;
