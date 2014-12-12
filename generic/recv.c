@@ -26,6 +26,7 @@
  */
 #include <stdio.h>
 #include <libfonz.h>
+#include "fonzint.h"
 
 #ifdef AVR
 unsigned char	fprecv_havepkt = 0;

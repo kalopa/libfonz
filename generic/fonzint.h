@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, Kalopa Research.  All rights reserved.  This is free
+ * Copyright (c) 2014, Kalopa Research.  All rights reserved.  This is free
  * software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation;
  * either version 2, or (at your option) any later version.
@@ -28,42 +28,26 @@
 #define FONZ_ESCAPE	0xcc
 #define FONZ_MASK	0xc0
 
-#define FONZ_REQUEST	0x00
-#define FONZ_RESPONSE	0x01
-
 #define FONZ_STATE_WAITHDR	0
 #define FONZ_STATE_FIRSTBYTE	1
 #define FONZ_STATE_WAITARG1	2
 #define FONZ_STATE_WAITARG2	3
 #define FONZ_STATE_WAITCSUM	4
 
-struct	fonz	{
-	struct	fonz	*next;
-	unsigned char	cmd;
-	unsigned char	arg1;
-	unsigned char	arg2;
-};
-
 struct	fonz	*fp_freerxq;
 struct	fonz	*fp_freetxq;
 struct	fonz	*fp_recvq;
+
+#ifdef AVR
 struct	fonz	*fp_sendq;
-
-void		fp_init(int, int);
-struct fonz	*fp_alloc();
-void		fp_free();
-void		fp_send(struct fonz *);
-struct fonz	*fp_receive();
-int		fp_sendcmd(unsigned char, unsigned char, unsigned char);
-void		fp_enable();
-void		fp_disable();
-
-void		fp_indata(unsigned char);
-int		fp_outdata();
-void		_fp_addtail(struct fonz *, struct fonz **);
-struct	fonz	*_fp_remhead(struct fonz **);
 
 void		_fp_rxinton();
 void		_fp_rxintoff();
 void		_fp_txinton();
 void		_fp_txintoff();
+#else
+struct	fonz	*fp_sendq[FONZ_PRIORITIES];
+#endif
+
+void		_fp_addtail(struct fonz *, struct fonz **);
+struct fonz	*_fp_remhead(struct fonz **);

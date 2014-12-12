@@ -26,6 +26,7 @@
  */
 #include <stdio.h>
 #include <libfonz.h>
+#include "fonzint.h"
 
 /*
  * Release a packet to the tail of a named queue.

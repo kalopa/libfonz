@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <libfonz.h>
+#include "fonzint.h"
 
 /*
  * Enable all FonzPacket communications.

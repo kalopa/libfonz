@@ -26,6 +26,7 @@
  */
 #include <stdio.h>
 #include <libfonz.h>
+#include "fonzint.h"
 
 /*
  * We have received a block of data over the wire. Attempt to construct

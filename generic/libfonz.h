@@ -24,20 +24,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#define FONZ_HEADER	0xce
-#define FONZ_ESCAPE	0xcc
-#define FONZ_MASK	0xc0
-
 #define FONZ_REQUEST	0x00
 #define FONZ_RESPONSE	0x01
 
 #define FONZ_PRIORITIES		8
 
-#define FONZ_STATE_WAITHDR	0
-#define FONZ_STATE_FIRSTBYTE	1
-#define FONZ_STATE_WAITARG1	2
-#define FONZ_STATE_WAITARG2	3
-#define FONZ_STATE_WAITCSUM	4
+#define FONZ_COMMAND_PING	0
+#define FONZ_COMMAND_MAGIC	1
+
+#define FONZ_MAGIC_SLAVE	0x55
+#define FONZ_MAGIC_CLIENT	0xa0
 
 struct	fonz	{
 	struct	fonz	*next;
@@ -46,20 +42,18 @@ struct	fonz	{
 	unsigned char	arg2;
 };
 
-struct	fonz	*fp_freerxq;
-struct	fonz	*fp_freetxq;
-struct	fonz	*fp_recvq;
-struct	fonz	*fp_sendq[FONZ_PRIORITIES];
-
 void		fp_init(int, int);
 struct fonz	*fp_alloc();
 void		fp_free();
-void		fp_send(struct fonz *, int);
 struct fonz	*fp_receive();
+#ifdef AVR
+void		fp_send(struct fonz *);
+int		fp_sendcmd(unsigned char, unsigned char, unsigned char);
+#else
+void		fp_send(struct fonz *, int);
 int		fp_sendcmd(unsigned char, unsigned char, unsigned char, int);
+#endif
 
 void		fp_indata(unsigned char);
 void		fp_inbuffer(unsigned char *, int);
 int		fp_outbuffer(unsigned char *, int);
-void		_fp_addtail(struct fonz *, struct fonz **);
-struct	fonz	*_fp_remhead(struct fonz **);

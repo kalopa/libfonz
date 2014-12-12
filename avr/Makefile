@@ -42,7 +42,7 @@ OBJS=	drain.o send.o init.o alloc.o recv.o queue.o sioint.o
 LIB=	libfonz.a
 
 ASFLAGS= -mmcu=$(DEVICE)
-CFLAGS=	-I. -Wall -O2 -mmcu=$(DEVICE) -DAVR
+CFLAGS=	-I../generic -Wall -O2 -mmcu=$(DEVICE) -DAVR
 
 $(LIB): $(OBJS)
 

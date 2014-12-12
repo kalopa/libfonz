@@ -26,6 +26,7 @@
  */
 #include <stdio.h>
 #include <libfonz.h>
+#include "fonzint.h"
 
 static	int	_fillbyte(int, unsigned char *, int);
 
@@ -133,6 +134,9 @@ fp_outbuffer(unsigned char *bufferp, int blen)
 			 */
 			break;
 		}
+		bufferp += n;
+		blen -= n;
+		tmplen += n;
 		/*
 		 * OK, we had enough space for the packet. Move outlen
 		 * up a bit, and remove the packet from the queue.
