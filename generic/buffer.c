@@ -35,6 +35,6 @@
 void
 fp_inbuffer(unsigned char *bufferp, int blen)
 {
-	while (blen > 0)
+	while (blen-- > 0)
 		fp_indata(*bufferp++);
 }

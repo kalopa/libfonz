@@ -54,7 +54,7 @@ clean:
 $(LIB):	$(OBJS)
 	$(AR) cru $(LIB) $?
 
-$(OBJS): libfonz.h
+$(OBJS): ../generic/libfonz.h
 
 alloc.o: ../generic/alloc.c
 	$(CC) $(CFLAGS) -c -o $@ $<

@@ -24,8 +24,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#define FONZ_REQUEST	0x00
-#define FONZ_RESPONSE	0x01
+#define FONZ_REQUEST		0x00
+#define FONZ_RESPONSE		0x01
 
 #define FONZ_PRIORITIES		8
 
@@ -35,11 +35,13 @@
 #define FONZ_MAGIC_MASTER	0x55
 #define FONZ_MAGIC_SLAVE	0xa0
 
+typedef unsigned char byte_t;
+
 struct	fonz	{
 	struct	fonz	*next;
-	unsigned char	cmd;
-	unsigned char	arg1;
-	unsigned char	arg2;
+	byte_t		cmd;
+	byte_t		arg1;
+	byte_t		arg2;
 };
 
 void		fp_init(int, int);
@@ -48,10 +50,10 @@ void		fp_free();
 struct fonz	*fp_receive();
 #ifdef AVR
 void		fp_send(struct fonz *);
-int		fp_sendcmd(unsigned char, unsigned char, unsigned char);
+int		fp_sendcmd(byte_t, byte_t, byte_t);
 #else
 void		fp_send(struct fonz *, int);
-int		fp_sendcmd(unsigned char, unsigned char, unsigned char, int);
+int		fp_sendcmd(byte_t, byte_t, byte_t, int);
 #endif
 
 void		fp_indata(unsigned char);

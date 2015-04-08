@@ -26,23 +26,14 @@
 #
 # ABSTRACT
 #
-SRCS=	init.c alloc.c recv.c send.c queue.c buffer.c
-OBJS=	$(SRCS:.c=.o)
-LIB=	libfonz.a
+all:
+	make -C generic
+	make -C fonzsw
 
-CFLAGS=	-Wall -O2 -I.
-
-$(LIB): $(OBJS)
-
-all:	$(LIB)
+install:
+	make -C generic install
+	make -C fonzsw install
 
 clean:
-	rm -f $(LIB) $(OBJS)
-
-tags:	$(SRCS)
-	ctags $(SRCS)
-
-$(LIB):	$(OBJS)
-	$(AR) cru $(LIB) $?
-
-$(OBJS): libfonz.h
+	make -C generic clean
+	make -C fonzsw clean
